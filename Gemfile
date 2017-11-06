@@ -13,6 +13,9 @@ gem 'nokogiri', '1.6.8.1'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'minitest-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
