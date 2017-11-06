@@ -1,5 +1,14 @@
 class MealPlansController < ApplicationController
   before_action :require_login
+  
+  def index
+    @current_meal_plan = current_user.meal_plans.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).first
+    @meal_plans = current_user.meal_plans.order("start_date desc")
+  end
+
+  def show
+    @meal_plan = current_user.meal_plans.find(params[:id])
+  end
 
   def new
     @meal_plan = current_user.meal_plans.build(
@@ -10,37 +19,19 @@ class MealPlansController < ApplicationController
     @meal_plan.build_meals
   end
 
+
   def create
     @meal_plan = current_user.meal_plans.build(meal_plan_params)
   
     if @meal_plan.save
       redirect_to meal_plan_path(@meal_plan), notice: "Meal plan created!"
     else
+      puts @meal_plan.errors.inspect
       @errors = @meal_plan.errors.full_messages
       render :new
     end
   end
-  
-  private
-  
-  def meal_plan_params
-    params.require(:meal_plan).permit(
-      :start_date,
-      :end_date,
-      meals_attributes: [
-        :id,
-        :date,
-        :recipe_id
-      ]
-    )
-  end
-  def show
-    @meal_plan = current_user.meal_plans.find(params[:id])
-  end
-  def index
-    @current_meal_plan = current_user.meal_plans.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).first
-    @meal_plans = current_user.meal_plans.order("start_date desc")
-  end
+
   def destroy
     @meal_plan = current_user.meal_plans.find(params[:id])
     @meal_plan.destroy
@@ -63,3 +54,22 @@ class MealPlansController < ApplicationController
 
 end
 
+
+  
+  private
+  
+  def meal_plan_params
+    params.require(:meal_plan).permit(
+      :start_date,
+      :end_date,
+      meals_attributes: [
+        :id,
+        :date,
+        :recipe_id
+      ]
+    )
+  end
+  
+
+  
+ 
