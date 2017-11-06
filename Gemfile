@@ -9,6 +9,7 @@ gem 'rails-ujs'
 gem 'jquery-rails', '~> 4.3.1' 
 gem 'clearance', '~> 1.15'
 gem 'nokogiri', '1.6.8.1' 
+gem 'bootstrap-sass', '~> 3.3.6'
 
 
 group :development, :test do
